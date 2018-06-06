@@ -5,13 +5,11 @@
 ## 近来用Flask做了一个小小的[Demo][1]（目前还在做），用的是`MongoDB`，ORM采用的是时`Flask-MongoEngine`，虽然是叫做`Flask-MongoEngine`，但其实只是对`MongoEngine`的一种封装，让其成为了`Flask`的扩展，所以在查找资料的时候直接找`MongoEngine`的资料就可以了，然而在开发的过程中，突然发现有关的`MongoEngine`的中文资料实在是太少了，作为当前比较流行`NoSQL`数据库，大部分的Python Web开发者其实都是比较钟爱NoSQL的，所以今天打算翻译一下`MongoEngine`的官方文档 ##
 ### 这里我只会翻译我个人认为比较重要的部分 ，翻译不好还请原谅###
 
-
 ----------
 
 
 ##（一）. 安装 ##
   `$ pip install mongoengine`
-
 
 ----------
 
@@ -33,8 +31,8 @@ def _connect(conn_settings):
  关于flask-mongoengine的连接数据库的方式，我就不一一列举了，可以去看它的[文档][2]，很简单
 
 > mongoengine 
-    
-    
+
+
 1. 第一种方式
 
 ```
@@ -61,7 +59,6 @@ def _connect(conn_settings):
     connect （'project1' ， host = 'mongodb：// localhost / database_name' ）
 ```
 
-
 ----------
 ##（三). 定义文件 ##
 
@@ -78,32 +75,32 @@ class Page(Document):
 ### 3.1. 字段 ###
 **默认情况下，字段不是必需的。要使字段成为必填字段，请将字段的`required`关键字参数设置 为`True`。字段也可能有可用的验证约束（`max_length`例如上面的示例中）。字段也可以采用默认值，如果没有提供值，将使用默认值。默认值可以可选地是可调用的，将被调用来检索该值（例如在上面的示例中）。可用的字段类型如下所示**
 
-`BinaryField`              **二进制数据字段**
-`BooleanField`
-`ComplexDateTimeField`
-`DateTimeField`
-`DecimalField`
-`DictField`
+`BinaryField`              		**二进制数据字段**
+`BooleanField`     			**布尔型字段类型 **
+`ComplexDateTimeField`	**精准时间类型**
+`DateTimeField`   			**日期时间字段 **
+`DecimalField`			**定点十进制数字段 **
+`DictField`			**包装标准Python字典的字典字段。这与嵌入式文档类似，但结构没有定义。 **
 `DynamicField`
-`EmailField`
-`EmbeddedDocumentField`
+`EmailField`     			**将输入验证为电子邮件地址的字段 **
+`EmbeddedDocumentField`  				**嵌入式文档字段 **
 `EmbeddedDocumentListField`
-`FileField` **GridFS存储字段**
-`FloatField`
+`FileField` 					**GridFS存储字段**
+`FloatField`					**浮点数字段 **
 `GenericEmbeddedDocumentField`
-`GenericReferenceField`
+`GenericReferenceField`			**对任何文档子类的引用，在访问时自动取消引用(延迟地)**
 `GenericLazyReferenceField`
 `GeoPointField`
-`ImageField` **图像文件存储区域**
-`IntField`
-`ListField`
+`ImageField` 						**图像文件存储区域**
+`IntField`					**32位整数字段 **
+`ListField`					**包装标准字段的列表字段，允许将该字段的多个实例用作数据库中的列表 **
 `MapField`
 `ObjectIdField`
-`ReferenceField`
+`ReferenceField`				**对文档的引用**
 `LazyReferenceField`
 `SequenceField`
-`SortedListField`
-`StringField`
+`SortedListField`				**一个ListField，在写入数据库之前对列表的内容进行排序。**
+`StringField`					**一个unicode字符串字段 **
 `URLField`
 `UUIDField`
 `PointField`
@@ -112,7 +109,6 @@ class Page(Document):
 `MultiPointField`
 `MultiLineStringField`
 `MultiPolygonField`
-
 
 ----------
 
@@ -175,7 +171,6 @@ class Page(Document):
     tags = ListField(StringField(max_length=50))
 ```
 
-
 ----------
 
 
@@ -195,7 +190,6 @@ comment2  =  Comment （content = 'Nice article！' ）
 page  =  Page （comments = [ comment1 ， comment2 ]）
 ```
 
-
 ----------
 
 
@@ -213,7 +207,6 @@ survey_response.answers = response_form.cleaned_data()
 survey_response.save()
 ```
 *字典可以存储复杂的数据，其他字典，列表，对其他对象的引用，所以是最灵活的可用字段类型*
-
 
 ----------
 ### 3.4. 引用字段 ###
@@ -321,7 +314,6 @@ Note
 ```
 *使用`GenericReferenceFields`的效率稍低于标准`ReferenceFields`，所以如果只引用一种文档类型，则更喜欢标准 `ReferenceField`*
 
-
 ----------
 
 
@@ -345,7 +337,6 @@ recipient = Recipient(name='admin', email='root@localhost')
 recipient.save()               # 会产生一个 ValidationError 错误
 recipient.save(validate=False) # 不会
 ```
-
 
 ----------
 
@@ -396,7 +387,6 @@ sparse （默认：False）
 允许您通过设置以秒为单位的时间过期来自动将某个字段中的数据过期。
 注意
 
-
 ----------
 
 
@@ -436,7 +426,6 @@ first_post = BlogPost.objects.order_by("+published_date").first()
 assert first_post.title == "Blog Post #1"
 ```
 
-
 ----------
 
 
@@ -453,7 +442,6 @@ class Page(Document):
 class DatedPage(Page):
     date = DateTimeField()
 ```
-
 
 ----------
 ##（八). 抽象类  ##
@@ -472,5 +460,6 @@ class User(BaseDocument):
 *现在，User类将有权访问继承的check_permissions方法，并且不会存储任何额外的_cls信息*
 *这个特性在实际的web开发中作用很大*
 
-  [1]: https://github.com/AngleMAXIN/FlyBlog
-  [2]: http://docs.mongoengine.org/projects/flask-mongoengine/en/latest/#installing-flask-mongoengine
+[1]: https://github.com/AngleMAXIN/FlyBlog
+[2]: http://docs.mongoengine.org/projects/flask-mongoengine/en/latest/#installing-flask-mongoengine
+
